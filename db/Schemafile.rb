@@ -1,5 +1,53 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+create_table "assistants", force: :cascade do |t|
+  t.string "assistant_identifier"
+  t.bigint "topic_id", null: false
+  t.integer "type"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["topic_id"], name: "index_assistants_on_topic_id"
+end
+
+create_table "chapter_progresses", force: :cascade do |t|
+  t.bigint "user_id", null: false
+  t.bigint "chapter_id", null: false
+  t.integer "status"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["chapter_id"], name: "index_chapter_progresses_on_chapter_id"
+  t.index ["user_id"], name: "index_chapter_progresses_on_user_id"
+end
+
+create_table "chapters", force: :cascade do |t|
+  t.string "title"
+  t.text "description"
+  t.integer "position"
+  t.bigint "course_id", null: false
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["course_id"], name: "index_chapters_on_course_id"
+end
+
+create_table "courses", force: :cascade do |t|
+  t.string "title"
+  t.text "description"
+  t.integer "position"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+end
+
+create_table "messages", force: :cascade do |t|
+  t.bigint "user_thread_id", null: false
+  t.string "content"
+  t.integer "sender_type"
+  t.string "message_identifier"
+  t.integer "status"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["user_thread_id"], name: "index_messages_on_user_thread_id"
+end
+
 create_table "solid_cable_messages", force: :cascade do |t|
   t.binary "channel", null: false
   t.binary "payload", null: false
@@ -142,9 +190,81 @@ create_table "solid_queue_semaphores", force: :cascade do |t|
   t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
 end
 
+create_table "source_documents", force: :cascade do |t|
+  t.string "title"
+  t.bigint "uploaded_by_id", null: false
+  t.bigint "assistant_id", null: false
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["assistant_id"], name: "index_source_documents_on_assistant_id"
+  t.index ["uploaded_by_id"], name: "index_source_documents_on_uploaded_by_id"
+end
+
+create_table "topics", force: :cascade do |t|
+  t.string "title"
+  t.text "question"
+  t.text "model_answer"
+  t.integer "position"
+  t.bigint "chapter_id", null: false
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["chapter_id"], name: "index_topics_on_chapter_id"
+end
+
+create_table "user_thread_progresses", force: :cascade do |t|
+  t.bigint "user_thread_id", null: false
+  t.integer "status"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["user_thread_id"], name: "index_user_thread_progresses_on_user_thread_id"
+end
+
+create_table "user_threads", force: :cascade do |t|
+  t.bigint "user_id", null: false
+  t.bigint "topic_id", null: false
+  t.string "thread_identifier"
+  t.string "latest_run_identifier"
+  t.integer "status"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["topic_id"], name: "index_user_threads_on_topic_id"
+  t.index ["user_id"], name: "index_user_threads_on_user_id"
+end
+
+create_table "user_topic_progresses", force: :cascade do |t|
+  t.bigint "user_id", null: false
+  t.bigint "topic_id", null: false
+  t.integer "status"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["topic_id"], name: "index_user_topic_progresses_on_topic_id"
+  t.index ["user_id"], name: "index_user_topic_progresses_on_user_id"
+end
+
+create_table "users", force: :cascade do |t|
+  t.string "name"
+  t.string "email"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.string "password_digest"
+end
+
+add_foreign_key "assistants", "topics"
+add_foreign_key "chapter_progresses", "chapters"
+add_foreign_key "chapter_progresses", "users"
+add_foreign_key "chapters", "courses"
+add_foreign_key "messages", "user_threads"
 add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+add_foreign_key "source_documents", "assistants"
+add_foreign_key "source_documents", "users", column: "uploaded_by_id"
+add_foreign_key "topics", "chapters"
+add_foreign_key "user_thread_progresses", "user_threads"
+add_foreign_key "user_threads", "topics"
+add_foreign_key "user_threads", "users"
+add_foreign_key "user_topic_progresses", "topics"
+add_foreign_key "user_topic_progresses", "users"
