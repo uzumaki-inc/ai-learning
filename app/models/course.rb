@@ -11,4 +11,6 @@
 #
 
 class Course < ApplicationRecord
+  has_many :chapters, dependent: :destroy
+  has_many :topics, through: :chapters
 end
