@@ -1,0 +1,19 @@
+<%= link_to course_path(course) do %>
+  <div class="rounded-lg border bg-card text-card-foreground shadow-sm relative group bg-white">
+    <div class="flex flex-col space-y-1.5 p-6" data-id="12">
+      <h2 class="text-lg font-semibold" data-id="13"><%= course.title %></h2>
+<!--      <div class="flex items-center space-x-2" data-id="14">-->
+<!--        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground" data-id="15">Beginner</div>-->
+<!--        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors border-transparent text-primary-foreground bg-green-500" data-id="16">Free</div>-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-yellow-500" data-id="17">-->
+<!--          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>-->
+<!--        </svg>-->
+<!--      </div>-->
+    </div>
+    <div class="p-6" data-id="18">
+      <p class="text-sm text-gray-500" data-id="19"><%= course.description %></p>
+<!--          <div class="w-full h-2 bg-gray-200 rounded mt-4" data-id="18"><div class="h-full bg-green-500 rounded" data-id="19" style="width: 100%;"></div></div>-->
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-hover:text-gray-600" data-id="23"><path d="m12 5 7 7-7 7"></path></svg>
+  </div>
+<% end %>
