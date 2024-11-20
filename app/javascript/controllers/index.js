@@ -9,3 +9,6 @@ application.register("enter-submit", EnterSubmitController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import TextareaAutosizeController from "./textarea_autosize_controller"
+application.register("textarea-autosize", TextareaAutosizeController)
