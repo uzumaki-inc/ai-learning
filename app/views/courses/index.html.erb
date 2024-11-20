@@ -1,5 +1,7 @@
 <main>
   <div class="px-4 pt-6">
-    <%= render @courses %>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <%= render @courses, user: current_user  %>
+    </div>
   </div>
 </main>
