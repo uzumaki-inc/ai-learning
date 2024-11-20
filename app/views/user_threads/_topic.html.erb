@@ -1,0 +1,9 @@
+<div class="relative">
+  <%= link_to start_topic_path(topic), data: { turbo_method: :post } do %>
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm <%= current_topic_id == topic.id ? 'border border-blue-500' : ''  %>">
+      <div class="flex flex-col space-y-1.5 p-6" data-id="32">
+        <h3 class="text-md font-semibold text-gray-500" data-id="33"><%= topic_counter + 1 %>. <%= topic.title %></h3>
+      </div>
+    </div>
+  <% end %>
+</div>

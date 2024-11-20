@@ -15,4 +15,5 @@
 
 class UserThreadProgress < ApplicationRecord
   belongs_to :user_thread
+  enum :status, { in_progress: 1, completed: 2 }, prefix: true, validate: true
 end

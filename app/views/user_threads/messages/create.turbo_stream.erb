@@ -1,0 +1,8 @@
+<%= turbo_stream.append 'messages' do %>
+  <%= render "user_threads/messages/message", message: @user_message, scroll_to: true %>
+  <%= render "user_threads/messages/message", message: @assistant_message, scroll_to: true %>
+<% end %>
+
+<%= turbo_stream.replace "form" do %>
+  <%= render "user_threads/messages/form", form_disabled: true, message: Message.new, user_thread: @user_thread %>
+<% end %>

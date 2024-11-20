@@ -1,0 +1,5 @@
+<div id="user_thread_progress_list" class="sticky top-0">
+  <div class="flex flex-col gap-4">
+    <%= render partial: 'user_threads/user_thread_progress', collection: user_thread_topic_progresses, locals: { current_user_thread_id: } %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
           <% chapter.topics.each do |topic| %>
             <div class="flex items-center space-x-2 my-4 border bg-card text-card-foreground shadow-sm p-4">
               <h3 class="text-lg">
-                <%= link_to topic.title, '#' %>
+                <%= link_to topic.title, start_topic_path(topic), data: { turbo_method: :post } %>
               </h3>
             </div>
           <% end %>

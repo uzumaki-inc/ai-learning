@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "form" do %>
+  <%# ブロードキャストではidがnilのオブジェクトをシリアライズできないので仕方なくここでmessageがなかったときはMessage.newをするようにしてる %>
+  <% message ||= Message.new %>
+  <% unless user_thread.user_thread_progress.status_completed? %>
+    <div class="w-full pt-2 md:pt-0 md:border-transparent md:w-[calc(100%-.5rem)]">
+      <%= form_with model: message, url: user_thread_messages_path(user_thread), data: { controller: 'enter-submit' } do |f| %>
+        <div class="relative">
+          <%= f.text_area :content, class: 'rounded-2xl m-0 w-full resize-none py-[10px] pr-10 focus:ring-0 focus-visible:ring-0 md:py-3.5 md:pr-12 placeholder-black/50 pl-4 focus:border-token-border-xheavy focus:shadow-[0_2px_6px_rgba(0,0,0,.05)] border border-token-border-heavy', required: true, disabled: form_disabled, data: { controller: 'textarea-autosize', action: 'keydown->enter-submit#checkKeyPress' } %>
+          <%= button_tag type: :submit,
+                         class: 'absolute md:bottom-3 md:right-3 right-2 disabled:bg-black disabled:opacity-10 disabled:text-gray-400 enabled:bg-black text-white p-0.5 border border-black rounded-lg bottom-1.5 transition-colors',
+                         disabled: form_disabled, data: { 'enter-submit-target': 'submit' } do %>
+            <span class="" data-state="closed"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-white"><path d="M7 11L12 6L17 11M12 18V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <% end %>
+        </div>
+
+        <% if message.errors.any? %>
+          <div id="error_explanation">
+            <ul>
+              <% message.errors.full_messages.each do |message| %>
+                <li class="text-xs text-red-600"><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <% if user_thread.user_thread_progress.status_completed? %>
+    <div class="w-full pt-2 md:pt-0 md:border-transparent md:w-[calc(100%-.5rem)]">
+      <div class="rounded-2xl m-0 w-full resize-none py-[10px] pr-10 md:py-3.5 md:pr-12 placeholder-black/50 pl-4 focus:border-token-border-xheavy focus:shadow-[0_2px_6px_rgba(0,0,0,.05)] border border-token-border-heavy bg-gray-100 text-gray-400 text-center">
+        このスレッドは終了しました
+      </div>
+    </div>
+  <% end %>
+<% end %>

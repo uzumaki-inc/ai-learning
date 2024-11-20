@@ -1,0 +1,30 @@
+<div class="relative">
+  <%= link_to thread_path(user_thread_topic_progress.user_thread) do %>
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm <%= current_user_thread_id == user_thread_topic_progress.user_thread.id ? 'border border-blue-500' : ''  %>">
+      <div class="flex flex-col space-y-1.5 p-6" data-id="32">
+        <h3 class="text-md font-semibold text-gray-500" data-id="33"><%= user_thread_topic_progress_counter + 1 %>. <%= user_thread_topic_progress.topic.title %></h3>
+        <div class="flex items-center space-x-2">
+          <% if user_thread_topic_progress.status_in_progress? %>
+            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground bg-orange-500" data-id="34">In Progress</div>
+          <% elsif user_thread_topic_progress.status_completed? %>
+            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground bg-green-500" data-id="34">Passed</div>
+          <% end %>
+          <%# TODO: N+1 %>
+          <% if user_thread_topic_progress.user.weak_topics?(user_thread_topic_progress.topic) %>
+            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 w-fit text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground bg-black" data-id="34">ストック</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if current_user_thread_id == user_thread_topic_progress.user_thread.id %>
+    <div class="absolute right-4 bottom-4">
+      <%= button_to reset_thread_path(user_thread_topic_progress.user_thread), method: :post, form: { data: { turbo_confirm: '以前のやりとりを消去し、新しくやり直します', turbo_frame: '_top' } }, class: 'inline-flex items-center bg-red-500 text-white px-3 py-1 text-xs rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75' do %>
+        リセット
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+      <% end %>
+    </div>
+  <% end %>
+</div>
