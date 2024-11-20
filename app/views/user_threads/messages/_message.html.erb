@@ -1,0 +1,114 @@
+<div id="<%= dom_id(message) %>">
+  <% if message.status_before_processing? %>
+    <div class="w-full text-token-text-primary">
+      <div class="px-4 py-2 justify-center text-sm md:gap-6 m-auto">
+        <div class="flex flex-1 text-sm mx-auto gap-3">
+          <div class="flex-shrink-0 flex flex-col relative items-end">
+            <div>
+              <div class="pt-0.5">
+                <div class="gizmo-shadow-stroke flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                  <div class="relative flex">
+                    <div class="bg-black p-1">
+                      <%= image_tag 'ai.png' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative flex w-full flex-col lg:w-[calc(100%-115px)]">
+            <div class="font-semibold select-none">AI</div>
+            <div class="flex-col gap-1 md:gap-3">
+              <div class="flex flex-grow flex-col max-w-full">
+                <div class="min-h-[20px] text-message break-words [.text-message+&amp;]:mt-5 overflow-x-auto">
+                  <div class="flex justify-center my-6 items-center gap-2">
+                    <span>生成中...</span>
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% elsif message.status_failed? %>
+    <div class="w-full text-token-text-primary">
+      <div class="px-4 py-2 justify-center text-sm md:gap-6 m-auto">
+        <div class="flex flex-1 text-sm mx-auto gap-3">
+          <div class="flex-shrink-0 flex flex-col relative items-end">
+            <div>
+              <div class="pt-0.5">
+                <div class="gizmo-shadow-stroke flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                  <div class="relative flex">
+                    <div class="bg-black p-1">
+                      <%= image_tag 'ai.png' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative flex w-full flex-col lg:w-[calc(100%-115px)]">
+            <div class="font-semibold select-none">AI</div>
+            <div class="flex-col gap-1 md:gap-3">
+              <div class="flex flex-grow flex-col max-w-full">
+                <div class="min-h-[20px] text-message break-words [.text-message+&amp;]:mt-5 overflow-x-auto">
+                  <div class="flex justify-center my-6 items-center gap-2">
+                    <div class="text-center">
+                      <div class="text-red-600 mb-2">生成に失敗しました</div>
+                      <%#= form_with url: retry_thread_message_path(message.user_thread, message) do |f| %>
+                        <%#= f.submit '再生成', class: 'cursor-pointer inline-flex items-center justify-center rounded-md text-xs lg:text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2' %>
+                      <%# end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="w-full text-token-text-primary">
+      <div class="px-4 py-2 justify-center text-sm md:gap-6 m-auto">
+        <div class="flex flex-1 text-sm mx-auto gap-3">
+          <div class="flex-shrink-0 flex flex-col relative items-end">
+            <div>
+              <div class="pt-0.5">
+                <div class="gizmo-shadow-stroke flex h-6 w-6 items-center justify-center overflow-hidden rounded-full">
+                  <div class="relative flex">
+                    <% if message.sender_type_assistant? %>
+                      <div class="bg-black p-1">
+                        <%= image_tag 'ai.png' %>
+                      </div>
+                    <% else %>
+                      <%#= image_tag message.user_thread.user.avatar, loading: "lazy", size: '24x24', class: 'rounded-sm' %>
+                      <svg class="" width="24" height="24" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/><g id="about"><path d="M16,16A7,7,0,1,0,9,9,7,7,0,0,0,16,16ZM16,4a5,5,0,1,1-5,5A5,5,0,0,1,16,4Z"/><path d="M17,18H15A11,11,0,0,0,4,29a1,1,0,0,0,1,1H27a1,1,0,0,0,1-1A11,11,0,0,0,17,18ZM6.06,28A9,9,0,0,1,15,20h2a9,9,0,0,1,8.94,8Z"/></g></svg>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative flex w-full flex-col lg:w-[calc(100%-115px)]">
+            <div class="font-semibold select-none"><%= message.sender_type_assistant? ? 'AI' : 'あなた' %></div>
+            <div class="flex-col gap-1 md:gap-3">
+              <div class="flex flex-grow flex-col max-w-full">
+                <div class="min-h-[20px] text-message break-words [.text-message+&amp;]:mt-5 overflow-x-auto">
+                  <div class="markdown-body">
+                    <%#= simple_format(message.content) %>
+                    <%= markdown message.content || '' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

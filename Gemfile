@@ -73,3 +73,7 @@ group :test do
 end
 
 gem "ridgepole"
+gem "ruby-openai"
+gem "redcarpet"
+gem "rouge"
+gem "rails-i18n"

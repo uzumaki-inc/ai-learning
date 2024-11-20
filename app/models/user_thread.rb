@@ -20,4 +20,7 @@
 class UserThread < ApplicationRecord
   belongs_to :user
   belongs_to :topic
+  has_one :user_thread_progress, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  enum :status, { unprocessed: 0, queued: 1, in_progress: 2, cancelling: 3, completed: 4, requires_action: 5, cancelled: 6, failed: 7, expired: 8 }, prefix: true, validate: true
 end

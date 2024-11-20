@@ -12,4 +12,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "courses#index"
   resources :courses, only: %i[index show]
+  resources :user_threads, only: %i[show create] do
+    resources :messages, only: %i[create], module: :user_threads
+  end
+  resources :topics, only: %i[show] do
+    member do
+      post :start
+    end
+  end
 end
