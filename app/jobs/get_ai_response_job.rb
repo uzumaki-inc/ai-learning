@@ -24,6 +24,8 @@ class GetAiResponseJob < ApplicationJob
         if content.include?("合格です")
           user_thread_progress = user_thread.user_thread_progress
           user_thread_progress.update!(status: :completed)
+          user_topic_progress = UserTopicProgress.find_by!(user_id: user_thread.user_id, topic_id: user_thread.topic_id)
+          user_topic_progress.update!(status: :completed)
         end
 
         message.broadcast_run_completed

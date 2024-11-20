@@ -1,5 +1,5 @@
 <li>
-  <% user_topic_progress = UserTopicProgress.find_by(user_id: current_user.id, topic:) %>
+  <% user_topic_progress = UserTopicProgress.find_by(user_id: user.id, topic:) %>
   <% if user_topic_progress.blank? %>
     <%= link_to start_topic_path(topic), data: { turbo_method: :post } do  %>
       <div class="w-full p-4 text-gray-900 bg-white border rounded-lg <%= current_topic_id == topic.id ? 'border border-[3px]' : ''  %>" role="alert">

@@ -46,15 +46,16 @@ class Message < ApplicationRecord
       target: "form"
     )
 
-    # broadcast_replace_later_to(
-    #   dom_id(user_thread),
-    #   partial: "threads/user_thread_topic_progress_list",
-    #   locals: {
-    #     user_thread_topic_progresses: ChapterProgress.find_by!(user_id: user_thread.user.id, chapter_id: user_thread.topic.chapter.id).user_thread_topic_progresses.joins(:topic).order('topics.position asc').to_a,
-    #     current_user_thread_id: user_thread.id
-    #   },
-    #   target: "user_thread_topic_progress_list"
-    # )
+    broadcast_replace_later_to(
+      dom_id(user_thread),
+      partial: "user_threads/topic_list",
+      locals: {
+        topics: user_thread.topic.chapter.topics.order(created_at: :asc).to_a, # TODO: positionでソートする
+        current_topic_id: user_thread.topic_id,
+        user: user_thread.user
+      },
+      target: "topic_list"
+    )
 
     # broadcast_replace_later_to(
     #   dom_id(user_thread),

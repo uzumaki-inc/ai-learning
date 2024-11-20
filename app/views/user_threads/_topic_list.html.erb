@@ -1,5 +1,5 @@
 <div id="topic_list" class="sticky top-0">
   <ol class="space-y-4 w-full">
-    <%= render partial: 'user_threads/topic', collection: topics, locals: { current_topic_id: } %>
+    <%= render partial: 'user_threads/topic', collection: topics, locals: { current_topic_id:, user: } %>
   </ol>
 </div>
