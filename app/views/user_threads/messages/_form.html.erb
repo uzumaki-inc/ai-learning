@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "form", class: 'absolute bottom-0 left-0 right-10' do %>
+<%= turbo_frame_tag "form", class: 'absolute bottom-4 left-6 right-4' do %>
   <%# ブロードキャストではidがnilのオブジェクトをシリアライズできないので仕方なくここでmessageがなかったときはMessage.newをするようにしてる %>
   <% message ||= Message.new %>
   <% unless user_thread.user_thread_progress.status_completed? %>

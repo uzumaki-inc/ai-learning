@@ -1,4 +1,4 @@
-<div id="topic_list" class="sticky top-0">
+<div id="topic_list" class="sticky top-0 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
   <ol class="space-y-4 w-full">
     <%= render partial: 'user_threads/topic', collection: topics, locals: { current_topic_id:, user: } %>
   </ol>

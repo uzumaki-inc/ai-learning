@@ -4,7 +4,7 @@
   <div class="px-4 pt-6">
     <%= render 'shared/breadcrumbs' %>
     <div class="flex lg:flex-row flex-col gap-4 lg: gap-0">
-      <div class="lg:w-2/3 lg:pr-3 lg:order-first order-last min-h-[calc(100vh_-_150px)] relative">
+      <div class="lg:w-2/3 lg:pr-3 lg:order-first order-last min-h-[calc(100vh_-_150px)] relative p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
         <div id="messages" class="max-h-[calc(100vh_-_280px)] overflow-y-auto">
           <%= render partial: 'user_threads/messages/message', collection: @messages %>
         </div>
