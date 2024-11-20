@@ -1,9 +1,34 @@
-<div class="relative">
-  <%= link_to start_topic_path(topic), data: { turbo_method: :post } do %>
-    <div class="rounded-lg border bg-card text-card-foreground shadow-sm <%= current_topic_id == topic.id ? 'border border-blue-500' : ''  %>">
-      <div class="flex flex-col space-y-1.5 p-6" data-id="32">
-        <h3 class="text-md font-semibold text-gray-500" data-id="33"><%= topic_counter + 1 %>. <%= topic.title %></h3>
+<li>
+  <% user_topic_progress = UserTopicProgress.find_by(user_id: current_user.id, topic:) %>
+  <% if user_topic_progress.blank? %>
+    <%= link_to start_topic_path(topic), data: { turbo_method: :post } do  %>
+      <div class="w-full p-4 text-gray-900 bg-white border rounded-lg <%= current_topic_id == topic.id ? 'border border-[3px]' : ''  %>" role="alert">
+        <div class="flex items-center justify-between">
+          <h3 class="font-medium"><%= topic_counter + 1 %>. <%= topic.title %></h3>
+        </div>
       </div>
-    </div>
+    <% end %>
+  <% elsif user_topic_progress.status_in_progress? %>
+    <%= link_to start_topic_path(topic), data: { turbo_method: :post }  do  %>
+      <div class="w-full p-4 text-blue-700 bg-blue-100 border border-blue-300 rounded-lg dark:bg-gray-800 dark:border-blue-800 dark:text-blue-400 <%= current_topic_id == topic.id ? 'border border-[3px]' : ''  %>" role="alert">
+        <div class="flex items-center justify-between">
+          <h3 class="font-medium"><%= topic_counter + 1 %>. <%= topic.title %></h3>
+          <svg class="rtl:rotate-180 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+          </svg>
+        </div>
+      </div>
+    <% end %>
+  <% elsif user_topic_progress.status_completed? %>
+    <%= link_to start_topic_path(topic), data: { turbo_method: :post }  do  %>
+      <div class="w-full p-4 text-green-700 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:border-green-800 dark:text-green-400 <%= current_topic_id == topic.id ? 'border border-[3px]' : ''  %>" role="alert">
+        <div class="flex items-center justify-between">
+          <h3 class="font-medium"><%= topic_counter + 1 %>. <%= topic.title %></h3>
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+          </svg>
+        </div>
+      </div>
+    <% end %>
   <% end %>
-</div>
+</li>

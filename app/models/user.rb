@@ -13,4 +13,5 @@
 
 class User < ApplicationRecord
   has_many :user_threads, dependent: :destroy
+  has_many :user_topic_progresses, dependent: :destroy
 end

@@ -18,4 +18,5 @@
 class UserTopicProgress < ApplicationRecord
   belongs_to :user
   belongs_to :topic
+  enum :status, { in_progress: 1, completed: 2 }, prefix: true, validate: true, default: :in_progress
 end

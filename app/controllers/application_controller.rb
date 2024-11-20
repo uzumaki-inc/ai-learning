@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
     # 仮
     @current_user ||= User.find_or_create_by!(demo_user_identifier:)
   end
+  helper_method :current_user
 
   def demo_user_identifier
     session[:demo_user_identifier] ||= SecureRandom.uuid

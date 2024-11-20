@@ -18,7 +18,9 @@
 
 class Topic < ApplicationRecord
   belongs_to :chapter
+  has_one :course, through: :chapter
   has_one :assistant, dependent: :destroy
+  has_many :user_topic_progresses, dependent: :destroy
 
   # AIとのチャットを始めるメソッド
   def start_by!(user)
@@ -32,6 +34,7 @@ class Topic < ApplicationRecord
       # chapter_progress = ChapterProgress.find_or_create_by!(user_id: user.id, chapter_id: chapter.id) do |chapter_progress|
       #   chapter_progress.status = :in_progress
       # end
+      UserTopicProgress.find_or_create_by!(user_id: user.id, topic_id: id)
       user_thread = UserThread.create!(user_id: user.id, topic_id: id, status: :unprocessed).tap do |user_thread|
         UserThreadProgress.create!(user_thread: user_thread, status: :in_progress)
       end
