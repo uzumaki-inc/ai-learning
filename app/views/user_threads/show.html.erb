@@ -1,6 +1,8 @@
 <%= turbo_stream_from "#{dom_id(@user_thread)}" %>
+<% breadcrumb :user_thread, @user_thread %>
 <main>
   <div class="px-4 pt-6">
+    <%= render 'shared/breadcrumbs' %>
     <div class="flex lg:flex-row flex-col gap-4 lg: gap-0">
       <div class="lg:w-2/3 lg:pr-3 lg:order-first order-last">
         <div id="messages">
