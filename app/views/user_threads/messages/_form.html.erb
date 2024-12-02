@@ -28,7 +28,10 @@
   <% if user_thread.user_thread_progress.status_completed? %>
     <div class="w-full pt-2 md:pt-0 md:border-transparent md:w-[calc(100%-.5rem)]">
       <div class="rounded-2xl m-0 w-full resize-none py-[10px] pr-10 md:py-3.5 md:pr-12 placeholder-black/50 pl-4 focus:border-token-border-xheavy focus:shadow-[0_2px_6px_rgba(0,0,0,.05)] border border-token-border-heavy bg-gray-100 text-gray-400 text-center">
-        このスレッドは終了しました
+        <div class="flex items-center justify-around">
+          このスレッドは終了しました
+          <%= render 'user_threads/model_answer', topic: user_thread.topic %>
+        </div>
       </div>
     </div>
   <% end %>
