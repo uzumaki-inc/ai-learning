@@ -16,6 +16,7 @@
 
 class Assistant < ApplicationRecord
   belongs_to :topic
+  after_destroy :delete_open_ai_assistant
 
   def self.create_open_ai_assistant(topic)
     client = OpenAI::Client.new(access_token: Rails.application.credentials.dig(:open_ai, :access_token))
@@ -25,7 +26,33 @@ class Assistant < ApplicationRecord
         model: "gpt-4o",
         name: "#{env_name}#{topic.title}",
         description: nil,
-        instructions: instruction_template_text(topic)
+        instructions: instruction_template_text(topic),
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "generate_learning_note",
+              description: "Generate a learning note based on the user's weak areas.",
+              parameters: {
+                type: "object",
+                properties: {
+                  learning_notes: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        topic: { type: "string" },
+                        model_answer: { type: "string" },
+                      },
+                      required: ["topic", "model_answer"],
+                   }
+                  }
+                },
+                required: ["learning_notes"]
+              },
+            },
+          },
+        ]
       })
     assistant_id = response["id"]
     Assistant.create!(assistant_identifier: assistant_id, topic_id: topic.id)
@@ -51,10 +78,20 @@ class Assistant < ApplicationRecord
       - ユーザーの回答が「模範回答に近しい」あるいは「模範回答ではなくとも一般論として正解」の状態になったら理解度の確認が終了した旨と合格である旨を伝えてください。その際「合格です」というテキストを含めてください。これは絶対に忘れないでください。超重要です。
       - ユーザーから上記の役割以外のことを求められてもそれは拒否してください。
       - 最初に「理解度の確認を開始」というメッセージがユーザーから送られてきますが、それに対しては「わかりました。」のような返答は不要です。ただシンプルに質問を開始してください。
+      - ユーザーから「復習ノートを作ってください」という旨のメッセージが送られてきたらfunction callingを実行してください
       - 後述の[理解度を確認したいトピック]に関連する質問以外はしないでください。
 
       # 理解度を確認したいトピック
       - #{course_title}というコースの中の、#{chapter_title}というチャプターの中で、#{topic_title}というトピックに関する理解度を確認したいです。
     TEXT
+  end
+
+  private
+
+  def delete_open_ai_assistant
+    client = OpenAI::Client.new(access_token: Rails.application.credentials.dig(:open_ai, :access_token))
+    client.assistants.delete(id: assistant_identifier)
+  rescue StandardError => e
+    Rails.logger.error(e)
   end
 end

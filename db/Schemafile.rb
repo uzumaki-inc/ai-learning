@@ -48,6 +48,17 @@ create_table "messages", force: :cascade do |t|
   t.index ["user_thread_id"], name: "index_messages_on_user_thread_id"
 end
 
+create_table "notebooks", force: :cascade do |t|
+  t.string "title"
+  t.text "content"
+  t.bigint "user_id", null: false
+  t.bigint "topic_id", null: false
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.index ["topic_id"], name: "index_notebooks_on_topic_id"
+  t.index ["user_id"], name: "index_notebooks_on_user_id"
+end
+
 create_table "solid_cable_messages", force: :cascade do |t|
   t.binary "channel", null: false
   t.binary "payload", null: false
@@ -255,6 +266,8 @@ add_foreign_key "chapter_progresses", "chapters"
 add_foreign_key "chapter_progresses", "users"
 add_foreign_key "chapters", "courses"
 add_foreign_key "messages", "user_threads"
+add_foreign_key "notebooks", "topics"
+add_foreign_key "notebooks", "users"
 add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
 add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
