@@ -6,20 +6,25 @@
     弱点ノート
   </h2>
   <hr class="my-2">
-  <% if notebooks.present? %>
-    <ol class="space-y-4 w-full">
-      <% notebooks.each do |notebook| %>
-        <li class="flex items-center space-x-3 rtl:space-x-reverse">
-          <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-          </svg>
-          <span><%= notebook.title %></span>
-        </li>
-      <% end %>
-    </ol>
-  <% else %>
-  <div class="">
-    <%= button_to '弱点を分析してノートを作る', '#', class: 'text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5' %>
-  </div>
+  <%= render 'shared/loading_or_content', loading: user_thread.notebook_status_in_progress? do %>
+    <% if notebooks.present? %>
+      <ol class="space-y-4 w-full">
+        <% notebooks.each do |notebook| %>
+          <li class="flex items-center space-x-1">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9a3 3 0 0 1 3-3m-2 15h4m0-3c0-4.1 4-4.9 4-9A6 6 0 1 0 6 9c0 4 4 5 4 9h4Z"/>
+            </svg>
+            <span>
+            <%= link_to notebook.title, notebook_path(notebook), data: { turbo_frame: :modal }, class: 'block p-2 text-blue-600 hover:underline'%>
+          </span>
+          </li>
+        <% end %>
+      </ol>
+    <% else %>
+      <div class="">
+        <%= button_to 'AIに弱点をまとめてもらう',
+                      user_thread_notebooks_path(user_thread), class: 'text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5' %>
+      </div>
+    <% end %>
   <% end %>
 </div>

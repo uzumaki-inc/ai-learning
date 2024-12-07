@@ -1,0 +1,5 @@
+<% if loading %>
+  <%= render "shared/loading" %>
+<% else %>
+  <%= yield %> <!-- 呼び出し元で渡されたブロック -->
+<% end %>

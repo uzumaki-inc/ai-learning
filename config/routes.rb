@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :courses, only: %i[index show]
   resources :user_threads, only: %i[show create] do
     resources :messages, only: %i[create], module: :user_threads
+    resources :notebooks, only: %i[create], module: :user_threads
   end
   resources :topics, only: %i[show] do
     member do

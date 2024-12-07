@@ -10,6 +10,7 @@
 #  status                :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  notebook_status       :integer
 #
 # Indexes
 #
@@ -18,13 +19,28 @@
 #
 
 class UserThread < ApplicationRecord
+  include ActionView::RecordIdentifier
   belongs_to :user
   belongs_to :topic
   has_one :user_thread_progress, dependent: :destroy
   has_many :messages, dependent: :destroy
   enum :status, { unprocessed: 0, queued: 1, in_progress: 2, cancelling: 3, completed: 4, requires_action: 5, cancelled: 6, failed: 7, expired: 8 }, prefix: true, validate: true
+  enum :notebook_status, { in_progress: 0, completed: 1 }, prefix: true, validate: true, default: :completed
 
-  def fetch_notebook_from_openai
+
+  def broadcast_notebook_created
+    broadcast_replace_later_to(
+      dom_id(self),
+      partial: "user_threads/notebook_list",
+      locals: {
+        notebooks: Notebook.where(topic:, user:).order(created_at: :asc).to_a,
+        user_thread: self
+      },
+      target: "notebook_list"
+    )
+  end
+
+  def create_notebooks
     message_histories = messages.order(created_at: :asc)
     message_history_array = message_histories.map do |message|
       { role: message.sender_type, content: message.content }

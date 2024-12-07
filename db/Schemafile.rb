@@ -238,6 +238,7 @@ create_table "user_threads", force: :cascade do |t|
   t.integer "status"
   t.datetime "created_at", null: false
   t.datetime "updated_at", null: false
+  t.integer "notebook_status"
   t.index ["topic_id"], name: "index_user_threads_on_topic_id"
   t.index ["user_id"], name: "index_user_threads_on_user_id"
 end

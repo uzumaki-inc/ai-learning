@@ -10,5 +10,8 @@ application.register("enter-submit", EnterSubmitController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import MyModalController from "./my_modal_controller"
+application.register("my-modal", MyModalController)
+
 import TextareaAutosizeController from "./textarea_autosize_controller"
 application.register("textarea-autosize", TextareaAutosizeController)

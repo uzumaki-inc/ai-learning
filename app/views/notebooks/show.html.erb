@@ -1,0 +1,4 @@
+<%= render "shared/modal", title: "弱点ノート" do %>
+  <h2 class="font-bold text-lg"><%= @notebook.title %></h2>
+  <%= markdown(@notebook.content) %>
+<% end %>
