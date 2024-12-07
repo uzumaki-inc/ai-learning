@@ -68,15 +68,15 @@ class UserThread < ApplicationRecord
                       type: "object",
                       properties: {
                         topic: { type: "string" },
-                        model_answer: { type: "string" },
+                        model_answer: { type: "string" }
                       },
-                      required: ["topic", "model_answer"],
+                      required: ["topic", "model_answer"]
                     }
                   }
                 },
                 required: ["learning_notes"]
-              },
-            },
+              }
+            }
           }
         ],
         # Optional, defaults to "auto"

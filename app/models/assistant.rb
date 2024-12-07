@@ -26,7 +26,7 @@ class Assistant < ApplicationRecord
         model: "gpt-4o",
         name: "#{env_name}#{topic.title}",
         description: nil,
-        instructions: instruction_template_text(topic),
+        instructions: instruction_template_text(topic)
       })
     assistant_id = response["id"]
     Assistant.create!(assistant_identifier: assistant_id, topic_id: topic.id)

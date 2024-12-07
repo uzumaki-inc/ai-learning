@@ -34,10 +34,10 @@ class GetAiResponseJob < ApplicationJob
         p "--------------requires_action-----------------"
         p "--------------requires_action-----------------"
         p "--------------requires_action-----------------"
-        tools_to_call = run_response.dig('required_action', 'submit_tool_outputs', 'tool_calls')
+        tools_to_call = run_response.dig("required_action", "submit_tool_outputs", "tool_calls")
         my_tool_outputs = tools_to_call.map { |tool|
           # Call the functions based on the tool's name
-          function_name = tool.dig('function', 'name')
+          function_name = tool.dig("function", "name")
           arguments = JSON.parse(
             tool.dig("function", "arguments"),
             { symbolize_names: true },
@@ -45,11 +45,11 @@ class GetAiResponseJob < ApplicationJob
 
           p arguments
           tool_output = case function_name
-                        when "generate_learning_note"
+          when "generate_learning_note"
                           generate_learning_note(user_thread, **arguments)
-                        end
+          end
 
-          { tool_call_id: tool['id'], output: tool_output }
+          { tool_call_id: tool["id"], output: tool_output }
         }
 
         client.runs.submit_tool_outputs(
