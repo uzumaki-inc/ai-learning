@@ -48,4 +48,8 @@ class Topic < ApplicationRecord
     # AiLearning::Reporter::SlackReporter.call("#{user.nickname}が#{title}の理解度の確認を開始しました。")
     new_user_thread
   end
+
+  def create_open_ai_assistant
+    Assistant.create_open_ai_assistant(self)
+  end
 end

@@ -20,4 +20,5 @@ Rails.application.routes.draw do
       post :start
     end
   end
+  resources :notebooks, only: %i[index show]
 end
