@@ -31,6 +31,32 @@ class GetAiResponseJob < ApplicationJob
         message.broadcast_run_completed
         break
       when "requires_action"
+        p "--------------requires_action-----------------"
+        p "--------------requires_action-----------------"
+        p "--------------requires_action-----------------"
+        tools_to_call = run_response.dig("required_action", "submit_tool_outputs", "tool_calls")
+        my_tool_outputs = tools_to_call.map { |tool|
+          # Call the functions based on the tool's name
+          function_name = tool.dig("function", "name")
+          arguments = JSON.parse(
+            tool.dig("function", "arguments"),
+            { symbolize_names: true },
+            )
+
+          p arguments
+          tool_output = case function_name
+          when "generate_learning_note"
+                          generate_learning_note(user_thread, **arguments)
+          end
+
+          { tool_call_id: tool["id"], output: tool_output }
+        }
+
+        client.runs.submit_tool_outputs(
+          thread_id: user_thread.thread_identifier,
+          run_id: user_thread.latest_run_identifier,
+          parameters: { tool_outputs: my_tool_outputs }
+        )
 
       when "failed"
         # TODO
@@ -49,5 +75,20 @@ class GetAiResponseJob < ApplicationJob
       end
       sleep 2
     end
+  end
+
+  def generate_learning_note(user_thread, arguments)
+    p "----------------generate_learning_note----------------"
+    p "----------------generate_learning_note----------------"
+    p "----------------generate_learning_note----------------"
+    learning_notes = arguments[:learning_notes]
+    topic = user_thread.topic
+    learning_notes.each do |learning_note|
+      title = learning_note[:topic]
+      model_answer = learning_note[:model_answer]
+      Notebook.create(title: title, content: model_answer, user_id: user_thread.user_id, topic_id: topic.id)
+    end
+    p arguments
+    "学習ノートを生成しました。"
   end
 end
