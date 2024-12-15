@@ -2,3 +2,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "flowbite/dist/flowbite.turbo.js";
+
+Turbo.StreamActions.redirect = function () {
+    Turbo.visit(this.target);
+};　

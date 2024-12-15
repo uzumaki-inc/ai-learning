@@ -8,8 +8,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    // このコードがなくても一見ちゃんと動くが、将来予期せぬ問題が起きる可能性があるので念のためモーダルを廃棄する
-    this.modal.dispose();
+    this.modal.hide()
   }
 
   close(event) {

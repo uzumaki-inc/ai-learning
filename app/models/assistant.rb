@@ -30,7 +30,7 @@ class Assistant < ApplicationRecord
       })
     assistant_id = response["id"]
     Assistant.create!(assistant_identifier: assistant_id, topic_id: topic.id)
-    sleep 0.1
+    sleep 0.5
   end
 
   def self.instruction_template_text(topic)
@@ -50,6 +50,7 @@ class Assistant < ApplicationRecord
       - 周辺の知識を問う質問もしてください。
       - 模範回答は後述の[模範回答]です。
       - ユーザーからの回答を分析し、理解が曖昧そうな場合は深掘って質問してください。
+        - 特に具体性を伴わない回答の場合は深く追及してください。
       - ユーザーの回答が「模範回答に近しい」あるいは「模範回答ではなくとも一般論として正解」の状態になったら理解度の確認が終了した旨と合格である旨を伝えてください。その際「合格です」というテキストを含めてください。これは絶対に忘れないでください。超重要です。
       - ユーザーから上記の役割以外のことを求められてもそれは拒否してください。
       - 最初に「理解度の確認を開始」というメッセージがユーザーから送られてきますが、それに対しては「わかりました。」のような返答は不要です。ただシンプルに質問を開始してください。

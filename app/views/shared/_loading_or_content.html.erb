@@ -1,5 +1,11 @@
 <% if loading %>
-  <%= render "shared/loading" %>
+  <div class="text-center">
+    <%= render "shared/loading" %>
+    <% if defined?(text) %>
+      <p class="text-gray-500 text-sm mt-2"><%= text %></p>
+    <% end %>
+  </div>
+
 <% else %>
   <%= yield %> <!-- 呼び出し元で渡されたブロック -->
 <% end %>
