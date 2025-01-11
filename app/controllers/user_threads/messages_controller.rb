@@ -11,7 +11,7 @@ class UserThreads::MessagesController < ApplicationController
     else
       @messages = @user_thread.messages.order(created_at: :asc).offset(1)
       @message = @user_message
-      render "threads/show", status: :unprocessable_entity
+      render "threads/show", status: :unprocessable_content
     end
   end
 end
