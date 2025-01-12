@@ -23,7 +23,7 @@ class Assistant < ApplicationRecord
     env_name = Rails.env.production? ? "(prod)" : "(dev)"
     response = client.assistants.create(
       parameters: {
-        model: "gpt-4o",
+        model: "gpt-4o-mini",
         name: "#{env_name}#{topic.title}",
         description: nil,
         instructions: instruction_template_text(topic)

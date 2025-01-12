@@ -28,7 +28,7 @@ class Course < ApplicationRecord
     client = OpenAI::Client.new(access_token: Rails.application.credentials.dig(:open_ai, :access_token))
     response = client.chat(
       parameters: {
-        model: "gpt-4o", # Required.
+        model: "gpt-4o-mini", # Required.
         messages: [
           { role: "system", content: "あなたはeラーニングの学習コンテンツ制作者です。" },
           { role: "user", content: "「#{title}」とう分野に関する学習コンテンツを日本語で作成してください。chapterは3種類くらいでそのchapterの中にtopicを5種類くらい作りたいです。また、questionには質問内容を、model_answerには模範回答を設定するようにしてください。" }
@@ -71,19 +71,17 @@ class Course < ApplicationRecord
 
     if message["role"] == "assistant" && message["tool_calls"]
       message["tool_calls"].each do |tool_call|
-        tool_call_id = tool_call.dig("id")
         function_name = tool_call.dig("function", "name")
         function_args = JSON.parse(
           tool_call.dig("function", "arguments"),
           { symbolize_names: true },
           )
-        function_response =
-          case function_name
-          when "generate_e_learning_contents"
-            generate_e_learning_contents(**function_args)
-          else
-            # decide how to handle
-          end
+        case function_name
+        when "generate_e_learning_contents"
+          generate_e_learning_contents(**function_args)
+        else
+          # decide how to handle
+        end
       end
     end
   end
