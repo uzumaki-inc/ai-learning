@@ -29,7 +29,7 @@ class Topic < ApplicationRecord
     # TODO: 仮に今後何度も同じトピックを開始できるようにする場合はこの条件分岐を削除する
     return if target_user_thread.present?
 
-    new_user_thread, assistant_message = transaction do
+    new_user_thread, user_message, assistant_message = transaction do
       # チャプターごとの進捗は現時点ではいらないのでコメントアウト
       # chapter_progress = ChapterProgress.find_or_create_by!(user_id: user.id, chapter_id: chapter.id) do |chapter_progress|
       #   chapter_progress.status = :in_progress
@@ -39,13 +39,12 @@ class Topic < ApplicationRecord
         UserThreadProgress.create!(user_thread: user_thread, status: :in_progress)
       end
 
-      Message.create!(content: "理解度の確認を開始", sender_type: :user, user_thread_id: user_thread.id, status: :completed)
+      user_message = Message.create!(content: "理解度の確認を開始。ハルシネーションは起こさないでください。", sender_type: :user, user_thread_id: user_thread.id, status: :completed)
       assistant_message = Message.create!(content: "", sender_type: :assistant, user_thread_id: user_thread.id, status: :before_processing)
-      [user_thread, assistant_message]
+      [user_thread, user_message, assistant_message]
     end
-    StartTopicJob.perform_later(user_thread_id: new_user_thread.id, assistant_message_id: assistant_message.id)
 
-    # AiLearning::Reporter::SlackReporter.call("#{user.nickname}が#{title}の理解度の確認を開始しました。")
+    PostMessageToAiJob.perform_later(user_message_id: user_message.id, assistant_message_id: assistant_message.id)
     new_user_thread
   end
 

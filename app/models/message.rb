@@ -29,20 +29,13 @@ class Message < ApplicationRecord
       locals: { message: self, scroll_to: true },
       target: "#{dom_id(self)}"
     )
-  end
 
-  def broadcast_run_completed
-    broadcast_replace_later_to(
-      dom_id(user_thread),
-      partial: "user_threads/messages/message",
-      locals: { message: self, scroll_to: true },
-      target: "#{dom_id(self)}"
-    )
+    return unless user_thread.status == "completed"
 
     broadcast_replace_later_to(
       dom_id(user_thread),
       partial: "user_threads/messages/form",
-      locals: { form_disabled: (user_thread.status != "completed"), user_thread: user_thread, message: nil },
+      locals: { form_disabled: false, user_thread: user_thread, message: nil },
       target: "form"
     )
 
@@ -56,15 +49,5 @@ class Message < ApplicationRecord
       },
       target: "topic_list"
     )
-
-    # broadcast_replace_later_to(
-    #   dom_id(user_thread),
-    #   partial: "threads/detail",
-    #   locals: {
-    #     user_thread: user_thread,
-    #     user: user
-    #   },
-    #   target: "user_thread_detail"
-    # )
   end
 end

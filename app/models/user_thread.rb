@@ -50,7 +50,7 @@ class UserThread < ApplicationRecord
     client = OpenAI::Client.new(access_token: Rails.application.credentials.dig(:open_ai, :access_token))
     response = client.chat(
       parameters: {
-        model: "gpt-4o", # Required.
+        model: "gpt-4o-mini", # Required.
         messages: message_history_array,
         temperature: 1.0,
         tools: [
