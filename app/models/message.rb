@@ -32,14 +32,14 @@ class Message < ApplicationRecord
 
     return unless user_thread.status == "completed"
 
-    broadcast_replace_later_to(
+    broadcast_replace_to(
       dom_id(user_thread),
       partial: "user_threads/messages/form",
       locals: { form_disabled: false, user_thread: user_thread, message: nil },
       target: "form"
     )
 
-    broadcast_replace_later_to(
+    broadcast_replace_to(
       dom_id(user_thread),
       partial: "user_threads/topic_list",
       locals: {
